@@ -33,6 +33,12 @@ class RegistrationServiceImplTest {
     }
 
     @Test
+    void register_nullUser_notOk() {
+        assertThrows(InvalidDataException.class, ()
+                -> service.register(null));
+    }
+
+    @Test
     void register_validUser_ok() {
         User user = getCorrectUser();
         User result = service.register(user);

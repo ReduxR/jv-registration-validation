@@ -138,7 +138,7 @@ class RegistrationServiceImplTest {
     }
 
     @Test
-    void register_empty_password_notOk() {
+    void register_emptyPassword_notOk() {
         User actual = getCorrectUser();
         actual.setPassword("");
         assertThrows(InvalidDataException.class, () ->

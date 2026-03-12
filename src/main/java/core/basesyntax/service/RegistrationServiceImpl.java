@@ -15,9 +15,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (user.getLogin() == null) {
             throw new InvalidDataException("Login can't be null!");
         }
-        if (user.getLogin().isEmpty()) {
-            throw new InvalidDataException("Login can't be empty!");
-        }
         if (user.getLogin().length() < MINIMAL_LENGTH) {
             throw new InvalidDataException("Login should contain at least 6 characters!");
         }
@@ -29,9 +26,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         if (user.getPassword() == null) {
             throw new InvalidDataException("Password can't be null!");
-        }
-        if (user.getPassword().isEmpty()) {
-            throw new InvalidDataException("Password can't be empty!");
         }
         if (user.getPassword().length() < MINIMAL_LENGTH) {
             throw new InvalidDataException("Password should contain at least 6 characters!");

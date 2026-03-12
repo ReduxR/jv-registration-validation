@@ -37,6 +37,8 @@ class RegistrationServiceImplTest {
         User user = getCorrectUser();
         User result = service.register(user);
         assertEquals(user, result);
+        assertEquals(1, Storage.people.size());
+        assertEquals(user, Storage.people.get(0));
     }
 
     @Test
@@ -69,6 +71,8 @@ class RegistrationServiceImplTest {
         actual.setAge(18);
         User result = service.register(actual);
         assertEquals(actual, result);
+        assertEquals(1, Storage.people.size());
+        assertEquals(actual, Storage.people.get(0));
     }
 
     @Test
@@ -90,7 +94,7 @@ class RegistrationServiceImplTest {
     @Test
     void register_identicalLogin_notOk() {
         User firstLoginUser = getCorrectUser();
-        service.register(firstLoginUser);
+        Storage.people.add(firstLoginUser);
 
         User sameLoginUser = getCorrectUser();
         sameLoginUser.setLogin(firstLoginUser.getLogin());
@@ -105,6 +109,16 @@ class RegistrationServiceImplTest {
         actual.setLogin("123456");
         User result = service.register(actual);
         assertEquals(actual, result);
+        assertEquals(1, Storage.people.size());
+        assertEquals(actual, Storage.people.get(0));
+    }
+
+    @Test
+    void register_loginLength5_notOk() {
+        User actual = getCorrectUser();
+        actual.setLogin("12345");
+        assertThrows(InvalidDataException.class, () ->
+                service.register(actual));
     }
 
     @Test
@@ -134,7 +148,15 @@ class RegistrationServiceImplTest {
     @Test
     void register_passwordLessThan6_notOk() {
         User actual = getCorrectUser();
-        actual.setPassword("3214");
+        actual.setPassword("12");
+        assertThrows(InvalidDataException.class, () ->
+                service.register(actual));
+    }
+
+    @Test
+    void register_passwordLength5_notOk() {
+        User actual = getCorrectUser();
+        actual.setPassword("12345");
         assertThrows(InvalidDataException.class, () ->
                 service.register(actual));
     }
@@ -145,5 +167,7 @@ class RegistrationServiceImplTest {
         actual.setPassword("123456");
         User result = service.register(actual);
         assertEquals(actual, result);
+        assertEquals(1, Storage.people.size());
+        assertEquals(actual, Storage.people.get(0));
     }
 }

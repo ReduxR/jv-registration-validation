@@ -12,23 +12,33 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public User register(User user) {
-        if (user.getLogin() == null
-                || user.getLogin().length() < MINIMAL_LENGTH
-                || user.getLogin().isEmpty()) {
-            throw new InvalidDataException("Wrong login length given!");
+        if (user.getLogin() == null) {
+            throw new InvalidDataException("Login can't be null!");
         }
-        if (user.getAge() == null || user.getAge() < MINIMAL_AGE) {
-            throw new InvalidDataException("Wrong age given!");
+        if (user.getLogin().isEmpty()) {
+            throw new InvalidDataException("Login can't be empty!");
         }
-        if (user.getPassword() == null
-                || user.getPassword().length() < MINIMAL_LENGTH
-                || user.getPassword().isEmpty()) {
-            throw new InvalidDataException("Wrong password length given!");
+        if (user.getLogin().length() < MINIMAL_LENGTH) {
+            throw new InvalidDataException("Login should contain at least 6 characters!");
+        }
+        if (user.getAge() == null) {
+            throw new InvalidDataException("Age cant be null!");
+        }
+        if (user.getAge() < MINIMAL_AGE) {
+            throw new InvalidDataException("User must be at least 18 years old!");
+        }
+        if (user.getPassword() == null) {
+            throw new InvalidDataException("Password can't be null!");
+        }
+        if (user.getPassword().isEmpty()) {
+            throw new InvalidDataException("Password can't be empty!");
+        }
+        if (user.getPassword().length() < MINIMAL_LENGTH) {
+            throw new InvalidDataException("Password should contain at least 6 characters!");
         }
         if (storageDao.get(user.getLogin()) != null) {
             throw new InvalidDataException("User with this login already exists!");
         }
-
         storageDao.add(user);
         return user;
     }

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import core.basesyntax.db.Storage;
-import core.basesyntax.exceptions.InvalidDataException;
+import core.basesyntax.exceptions.RegistrationException;
 import core.basesyntax.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ class RegistrationServiceImplTest {
         Storage.people.clear();
     }
 
-    public User getCorrectUser() {
+    private User getCorrectUser() {
         User correctUser = new User();
         correctUser.setId(1L);
         correctUser.setAge(20);
@@ -34,7 +34,7 @@ class RegistrationServiceImplTest {
 
     @Test
     void register_nullUser_notOk() {
-        assertThrows(InvalidDataException.class, ()
+        assertThrows(RegistrationException.class, ()
                 -> service.register(null));
     }
 
@@ -51,7 +51,7 @@ class RegistrationServiceImplTest {
     void register_nullAge_notOk() {
         User actual = getCorrectUser();
         actual.setAge(null);
-        assertThrows(InvalidDataException.class, () -> 
+        assertThrows(RegistrationException.class, () -> 
                 service.register(actual));
     }
 
@@ -59,7 +59,7 @@ class RegistrationServiceImplTest {
     void register_ageUnder0_notOk() {
         User actual = getCorrectUser();
         actual.setAge(-1);
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -67,7 +67,7 @@ class RegistrationServiceImplTest {
     void register_under18_notOk() {
         User actual = getCorrectUser();
         actual.setAge(17);
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -85,7 +85,7 @@ class RegistrationServiceImplTest {
     void register_nullLogin_notOk() {
         User actual = getCorrectUser();
         actual.setLogin(null);
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -93,7 +93,7 @@ class RegistrationServiceImplTest {
     void register_emptyLogin_notOk() {
         User actual = getCorrectUser();
         actual.setLogin("");
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -105,7 +105,7 @@ class RegistrationServiceImplTest {
         User sameLoginUser = getCorrectUser();
         sameLoginUser.setLogin(firstLoginUser.getLogin());
 
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(sameLoginUser));
     }
 
@@ -123,7 +123,7 @@ class RegistrationServiceImplTest {
     void register_loginLength5_notOk() {
         User actual = getCorrectUser();
         actual.setLogin("12345");
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -131,7 +131,7 @@ class RegistrationServiceImplTest {
     void register_loginLengthLessThan6_notOk() {
         User actual = getCorrectUser();
         actual.setLogin("11111");
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -139,7 +139,7 @@ class RegistrationServiceImplTest {
     void register_nullPassword_notOk() {
         User actual = getCorrectUser();
         actual.setPassword(null);
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -147,7 +147,7 @@ class RegistrationServiceImplTest {
     void register_emptyPassword_notOk() {
         User actual = getCorrectUser();
         actual.setPassword("");
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -155,7 +155,7 @@ class RegistrationServiceImplTest {
     void register_passwordLessThan6_notOk() {
         User actual = getCorrectUser();
         actual.setPassword("12");
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
@@ -163,7 +163,7 @@ class RegistrationServiceImplTest {
     void register_passwordLength5_notOk() {
         User actual = getCorrectUser();
         actual.setPassword("12345");
-        assertThrows(InvalidDataException.class, () ->
+        assertThrows(RegistrationException.class, () ->
                 service.register(actual));
     }
 
